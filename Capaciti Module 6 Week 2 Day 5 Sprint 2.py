@@ -3,7 +3,8 @@
 
 # In[3]:
 
-
+import pandas as pd
+from pandas import DataFrame
 import pandas as pd
 from pandas import DataFrame
 df=pd.read_csv("Sprint2.csv")
@@ -42,9 +43,6 @@ cursor.execute(sql)
 # disconnect from server
 
 db.close()
-
-import pandas as pd
-from pandas import DataFrame
 df=pd.read_csv("Sprint2.csv")
 df.head()
 df.count(axis='index')
