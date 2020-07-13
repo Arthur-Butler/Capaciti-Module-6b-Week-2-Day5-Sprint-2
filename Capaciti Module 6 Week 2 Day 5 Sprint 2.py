@@ -1,51 +1,33 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[3]:
-
+#Importing pandas for dataframe
 import pandas as pd
+#Importing DataFrame from pandas import
 from pandas import DataFrame
-import pandas as pd
-from pandas import DataFrame
-df=pd.read_csv("Sprint2.csv")
-df.head()
-
-
-# In[ ]:
-
-
-db = MySQLdb.connect("localhost","testuser","test123","TESTDB" )
-
-# prepare a cursor object using cursor() method
-
-cursor = db.cursor()
-
-# Drop table if it already exist using execute() method.
-
-cursor.execute("DROP TABLE IF EXISTS EMPLOYEE")
-
-# Create table as per requirement
-
-sql = """CREATE TABLE EMPLOYEE (
-
-         FIRST_NAME  CHAR(20) NOT NULL,
-
-         LAST_NAME  CHAR(20),
-
-         AGE INT,  
-
-         SEX CHAR(1),
-
-         INCOME FLOAT )"""
-
-cursor.execute(sql)
-
-# disconnect from server
-
-db.close()
-df=pd.read_csv("Sprint2.csv")
-df.head()
-df.count(axis='index')
-#df["Chips"].value_counts()
-#%matplotlib inline
-#df.plot()
+#Importing mysql.connector to connect to database
+import mysql.connector
+#Establishin database connection
+mydb=mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="1738art",
+    database="sprintdb"
+)
+#Creatin cursor to navigate database
+mycursor=mydb.cursor()
+#Fetchin columns from database using SQL
+mycursor.execute("SELECT `stock`.`Items`, `stock`.`ItemAmount` FROM stock")
+myresult=mycursor.fetchall()
+#Placing data in lists
+data=[]
+for row in myresult:
+    data.extend([row])
+mycursor.execute("SELECT `stock`.`Items` FROM stock")
+Items=mycursor.fetchall()
+rows=[]
+for row in Items:
+    rows.extend(row)
+print(data)
+df=pd.DataFrame(data,index=rows)
+print(df)
+#Diplaying data viually using matplotlib
+%matplotlib inline
+df.plot()
