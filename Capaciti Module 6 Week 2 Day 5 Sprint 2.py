@@ -1,3 +1,7 @@
+#Importing bar graph utils from pandas
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import matplotlib.pyplot as plt
+import numpy as np
 #Importing pandas for dataframe
 import pandas as pd
 #Importing DataFrame from pandas import
@@ -14,20 +18,24 @@ mydb=mysql.connector.connect(
 #Creatin cursor to navigate database
 mycursor=mydb.cursor()
 #Fetchin columns from database using SQL
-mycursor.execute("SELECT `stock`.`Items`, `stock`.`ItemAmount` FROM stock")
-myresult=mycursor.fetchall()
+mycursor.execute("SELECT `stock`.`ItemAmount` FROM stock")
+ItemAmount=mycursor.fetchall()
 #Placing data in lists
-data=[]
-for row in myresult:
-    data.extend([row])
+y=[]
+for row in ItemAmount:
+    y.extend(row)
+print(y)
 mycursor.execute("SELECT `stock`.`Items` FROM stock")
 Items=mycursor.fetchall()
-rows=[]
+x=[]
 for row in Items:
-    rows.extend(row)
-print(data)
-df=pd.DataFrame(data,index=rows)
-print(df)
-#Diplaying data viually using matplotlib
-%matplotlib inline
-df.plot()
+    x.extend(row)
+print(x)    
+y_pos=np.arange(7)
+#Diplaying data viually using a bar graph
+plt.bar(y_pos, y, align='center', alpha=1)
+plt.xticks(y_pos, x)
+plt.ylabel('Stock Amount')
+plt.xlabel('Item Category')
+plt.title('Amount of stock for each item category')
+plt.show()
